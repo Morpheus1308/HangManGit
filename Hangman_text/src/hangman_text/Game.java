@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,19 +17,28 @@ public class Game {
     private String word;
     private int wordLength;
     private String secretWord;
+    
     Scanner input = new Scanner(System.in);
-    Scanner txt;
+    Scanner text;
     private int numGuess;
 
-    public Game() throws FileNotFoundException {
-        File file = new File("words.txt");
-        this.txt = new Scanner(file);
+    public Game() {
+        
 
     }
 
     public void play() {
         words = new ArrayList<>();
-        words.add("bende");
+        java.io.File file = new java.io.File("wordsHangman.txt");
+        try {
+            this.text = new Scanner(file);
+            while(text.hasNext()){
+                words.add(text.nextLine());
+        }
+        } catch (FileNotFoundException ex) {
+            System.out.println("file not found");
+        }
+        
         System.out.printf("%s", introduction());
         wordLength = input.nextInt();
         while (!rightAmount(wordLength)) {
@@ -78,7 +89,7 @@ public class Game {
         char[] wordInChars;
         System.out.println("we've found a word, now its your turn to guess it:");
         while (numGuess <= secretWord.length() * 3) {
-            
+
             System.out.println("please enter a character, you think might be in the word: \n");
             guess = input.next();
             while (!checkInput(guess)) { //checking if the input has only one charakter and hasnt been tryed before
@@ -88,7 +99,7 @@ public class Game {
             wordInChars = secretWord.toCharArray();
             if (secretWord.contains(guess)) {
                 System.out.println("your guess was correct\n");
-                
+
                 for (char character : wordInChars) {
                     if (character == guess.charAt(0)) {
                         System.out.printf("%s", character);
@@ -96,7 +107,7 @@ public class Game {
                         System.out.printf(" _ ");
                     }
                 }
-                
+
                 System.out.println("");
             } else {
                 System.out.println("sorry, there is no " + guess + " in the word");
