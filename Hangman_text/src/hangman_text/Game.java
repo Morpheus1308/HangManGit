@@ -15,6 +15,7 @@ public class Game {
     private String word;
     private int wordLength;
     private String secretWord;
+    private ArrayList<String> alphabet = new ArrayList<>();
 
     Scanner input = new Scanner(System.in);
     Scanner text;
@@ -122,17 +123,17 @@ public class Game {
 
     //method to check if the user inputs more than one character
     private boolean checkInput(String guess) {
-        ArrayList<String> alphabet = new ArrayList<>();
-        boolean checkInput = false;
+
+        boolean checkInput = true;
+
         if (guess.length() > 1) {
             System.out.println("please enter only a single character");
             checkInput = false;
-        } else if (alphabet.contains(guess)) {
+        } else if (this.alphabet.contains(guess)) {
             System.out.println("you already entered this charakter, try again");
             checkInput = false;
         } else {
             alphabet.add(guess);
-            checkInput = true;
         }
         return checkInput;
     }
