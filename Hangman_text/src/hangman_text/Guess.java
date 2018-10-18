@@ -34,7 +34,7 @@ public class Guess {
             }
         }
         
-        guessAllowed = secretWord.length() * 2;
+        guessAllowed = (int) (secretWord.length() * 1.5);
     }
 
     public void guess() {
