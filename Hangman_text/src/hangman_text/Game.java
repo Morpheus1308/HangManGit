@@ -12,15 +12,17 @@ import java.util.Scanner;
 public class Game {
 
     private ArrayList<String> words;
-    private ArrayList<String> correctGuesses = new ArrayList<>();
+
     private String word;
     private int wordLength;
     private String secretWord;
-    private ArrayList<String> alphabet = new ArrayList<>();
+    
+    Guess guess;
+    
 
     Scanner input = new Scanner(System.in);
     Scanner text;
-    private int numGuess;
+    
 
     public Game() {
 
@@ -49,8 +51,9 @@ public class Game {
             wordLength = input.nextInt();
         }
         secretWord = findWord(wordLength);
-        
-        guessWord();
+
+        guess = new Guess(secretWord);
+        guess.guess();
 
     }
 
@@ -90,70 +93,4 @@ public class Game {
     }
 
     //Management of the users guesses
-    private void guessWord() {
-        numGuess = 0;
-        String guess;
-        char[] wordInChars;
-        System.out.println("we've found a word, now its your turn to guess it:");
-        while (numGuess <= secretWord.length() * 3) {
-            
-            System.out.println("So far you have guessed:");
-            wordInChars = secretWord.toCharArray();        
-                for (char character : wordInChars) {
-                    if(correctGuesses.contains(String.valueOf(String.valueOf(character)))){
-                        System.out.print(" " + character + " ");
-                    } else {
-                        System.out.print(" _ ");
-                    }
-                }
-            System.out.println("");
-            System.out.println("please enter a character, you think might be in the word: \n");
-            guess = input.next();
-            if(guess == "quit"){
-                System.out.println("system exit");
-                java.lang.System.exit(0);
-            }
-            while (!checkInput(guess)) { //checking if the input has only one charakter and hasnt been tryed before
-                guess = input.next();
-            }
-            wordInChars = secretWord.toCharArray();
-            if (secretWord.contains(guess)) {
-                System.out.println("your guess was correct\n");
-                correctGuesses.add(guess);
-                
-                for (char character : wordInChars) {
-                    if(correctGuesses.contains(String.valueOf(String.valueOf(character)))){
-                        System.out.print(" " + character + " ");
-                    } else {
-                        System.out.print(" _ ");
-                    }
-                }
-                System.out.println("");
-            } else {
-                System.out.println("sorry, there is no " + guess + " in the word");
-            }
-
-            numGuess++;
-        }
-
-    }
-
-    //method to check if the user inputs more than one character
-    private boolean checkInput(String guess) {
-
-        boolean checkInput = true;
-
-        if (guess.length() > 1) {
-            System.out.println("please enter only a single character");
-            checkInput = false;
-        } else if (this.alphabet.contains(guess)) {
-            System.out.println("you already entered this charakter, try again");
-            checkInput = false;
-        } else {
-            alphabet.add(guess);
-        }
-        return checkInput;
-    }
-    
-    
 }
