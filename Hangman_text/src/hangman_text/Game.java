@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class Game {
 
     private ArrayList<String> words;
+    private ArrayList<String> correctGuesses = new ArrayList<>();
     private String word;
     private int wordLength;
     private String secretWord;
@@ -41,12 +42,14 @@ public class Game {
         //introduction
         System.out.printf("%s", introduction());
         //getting userinput about the length of the word
+        System.out.println("");
         wordLength = input.nextInt();
         while (!rightAmount(wordLength)) {
             System.out.println("Unfortunately there is no word with this amount of characters, please enter another number");
             wordLength = input.nextInt();
         }
         secretWord = findWord(wordLength);
+        
         guessWord();
 
     }
@@ -93,24 +96,38 @@ public class Game {
         char[] wordInChars;
         System.out.println("we've found a word, now its your turn to guess it:");
         while (numGuess <= secretWord.length() * 3) {
-
+            
+            System.out.println("So far you have guessed:");
+            wordInChars = secretWord.toCharArray();        
+                for (char character : wordInChars) {
+                    if(correctGuesses.contains(String.valueOf(String.valueOf(character)))){
+                        System.out.print(" " + character + " ");
+                    } else {
+                        System.out.print(" _ ");
+                    }
+                }
+            System.out.println("");
             System.out.println("please enter a character, you think might be in the word: \n");
             guess = input.next();
+            if(guess == "quit"){
+                System.out.println("system exit");
+                java.lang.System.exit(0);
+            }
             while (!checkInput(guess)) { //checking if the input has only one charakter and hasnt been tryed before
                 guess = input.next();
             }
             wordInChars = secretWord.toCharArray();
             if (secretWord.contains(guess)) {
                 System.out.println("your guess was correct\n");
-
+                correctGuesses.add(guess);
+                
                 for (char character : wordInChars) {
-                    if (character == guess.charAt(0)) {
-                        System.out.printf(" %s ", character);
+                    if(correctGuesses.contains(String.valueOf(String.valueOf(character)))){
+                        System.out.print(" " + character + " ");
                     } else {
-                        System.out.printf(" _ ");
+                        System.out.print(" _ ");
                     }
                 }
-
                 System.out.println("");
             } else {
                 System.out.println("sorry, there is no " + guess + " in the word");
@@ -137,5 +154,6 @@ public class Game {
         }
         return checkInput;
     }
-
+    
+    
 }
